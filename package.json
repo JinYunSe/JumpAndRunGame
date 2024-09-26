@@ -1,0 +1,21 @@
+{
+  "name": "JumpAndRunGame",
+  "version": "1.0.0",
+  "main": "src/app.js",
+  "scripts": {
+    "dev": "nodemon src/app.js"
+  },
+  "repository": "https://github.com/JinYunSe/JumpAndRunGame.git",
+  "author": "JinYunSe <123576244+JinYunSe@users.noreply.github.com>",
+  "type": "module",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^3.1.7",
+    "prettier": "^3.3.3"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "init": "^0.1.2",
+    "socket.io": "^4.8.0"
+  }
+}
