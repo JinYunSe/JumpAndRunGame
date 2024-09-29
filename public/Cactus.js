@@ -1,3 +1,4 @@
+// 선인장 class
 class Cactus {
   constructor(ctx, x, y, width, height, image) {
     this.ctx = ctx;

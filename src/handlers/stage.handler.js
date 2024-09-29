@@ -2,6 +2,7 @@ import { getStage, setStage } from '../models/stage.model.js';
 import { getGameAssets } from '../init/assets.js';
 
 const moveStageHandler = (uuid, payload) => {
+  console.log(payload.currentStage + ', ' + payload.targetStage);
   // 유저는 스테이지를 하나 씩 올라갈 수 있다.
   // (1 -> 2, 2-> 3)
   // 유저는 일정 점수가 되면 다음 스테이지로 이동한다.
@@ -17,22 +18,24 @@ const moveStageHandler = (uuid, payload) => {
 
   // 오름차순 -> 유저의 현재 스테이지 가장 큰 스테이지 ID를 확인
   currentStages.sort((a, b) => a.id - b.id);
-  // 현재 스테이지 id가 올라 갈수록 높은 단계 입니다.
+  // 서버가 아는 현재 유저 스테이지 id가 올라 갈수록 높은 단계 입니다.
 
   const currentStage = currentStages[currentStages.length - 1];
+  // 서버가 아는 현재 유저 스테이지 가져오기
 
-  // 클라이언트 VS 서버 비교
+  // 서버(currentStage)   VS   클라이언트(payload.currendStage) 비교
   if (currentStage.id !== payload.currentStage)
     return { status: 'fail', message: 'Current Stage Mismatch' };
 
   const serverTime = Date.now(); // 현재 타임스탬프
-  const elapsedTime = (serverTime - currentStage.timestamp) / 1000;
-  // 경과 시간 = 서버 시간 - 현재 유저가 있는 스테이지의 timestamp 입니다.
+  const elapsedTime = (serverTime - currentStage.timestamp) / 100;
+  // 서버가 알고 있는 경과 시간 = 서버 시간 - 서버가 아는 현재 유저가 있는 스테이지의 timestamp 입니다.
   // timestamp는 milli seconds로 1000 -> 1초가 된다
   // 따라서 1000을 나눠 1초 당 1점을 얻도록 만들어준다.
 
   // 과제 1-> 2 뿐만이 아닌 전체에서 동작할 수 있는 코드로 만들기
   // 1스테이지 -> 2스테이지로 넘어가는 과정
+  console.log('서버가 측정한 시간 : ' + elapsedTime);
   if (elapsedTime < 100 || elapsedTime > 105) {
     return { status: 'fail', message: 'Invalid elapsed time' };
   }
@@ -45,7 +48,6 @@ const moveStageHandler = (uuid, payload) => {
   // 과제 Todo
   // : stage.json 파일 내용물로 내용물 검증하기
   // 점수를 비교해서 유저가 스테이지를 이동할 점수를 얻었는지 확인하는 코드 넣기
-  //
 
   setStage(uuid, payload.targetStage, serverTime);
   // 다음 스테이지를 제공하는 함수

@@ -1,6 +1,9 @@
+import { sendEvent } from './Socket.js';
+
 class Score {
   score = 0;
   HIGH_SCORE_KEY = 'highScore';
+  stageChange = true;
 
   constructor(ctx, scaleRatio) {
     this.ctx = ctx;
@@ -9,27 +12,30 @@ class Score {
   }
 
   update(deltaTime) {
-    this.score += deltaTime * 0.001;
+    this.score += deltaTime * 0.01;
 
-    // 점수가 100점 이상이 될 경우 서버에 메시지를 전송한다.
-    if (Math.floor(this.score === 100 && this.stageChange)) {
+    // 100의 배수이면서, this.stageChange가 true이면 실행
+    if (Math.floor(this.score) % 100 === 0 && Math.floor(this.score) !== 0 && this.stageChange) {
       this.stageChange = false;
 
-      //현재는 1스테이지에서 2스테이지 이동만 존재합니다.
-      //향후 유기적으로 만들기
-      sendEvent(11, { currentStage: 1000, targetStage: 1001 });
-      // 11번은 스테이지 이동을 담당하는 handler를 지정해줍니다.
+      // currentStage와 targetStage 계산
+      const currentStage = 1000 + Math.floor(this.score / 100) - 1;
+      const targetStage = currentStage + 1;
+
+      // 이벤트 전송
+      sendEvent(11, { currentStage: currentStage, targetStage: targetStage });
+
+      // 1초 후 stageChange를 다시 true로 설정
+      setTimeout(() => {
+        this.stageChange = true;
+      }, 1000); // 1초 후에 실행
     }
   }
 
-  // 아이템을 먹을 경우 서버에 요청을 보내서
-  // 과제에서 사용해야하는 코드 부분
-  // 점수 계산을 처리한다.
   getItem(itemId) {
     this.score += 0;
   }
 
-  // 점수 를 초기화 하는 함수
   reset() {
     this.score = 0;
   }
