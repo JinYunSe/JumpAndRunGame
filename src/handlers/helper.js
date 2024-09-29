@@ -1,7 +1,7 @@
-import { getGameAssets } from '../init/assets.js';
-import { getStage, setStage } from '../models/stage.model.js';
 import { getUser, removeUser } from '../models/user.model.js';
 import handlerMappings from './handlerMapping.js';
+import { CLIENT_VERSION } from '../constants.js';
+import { createStage } from '../models/stage.model.js';
 
 const handleDisconnect = (socket, uuid) => {
   removeUser(socket.id);
@@ -12,6 +12,8 @@ const handleDisconnect = (socket, uuid) => {
 const handleConnection = (socket, uuid) => {
   console.log(`New user connected ${uuid} with socket Id ${socket.id}`);
   console.log('Current users : ', getUser());
+
+  createStage(uuid);
 
   socket.emit('connection', { uuid });
   //소켓을 가지고 있는 유저 본인에게 정보를 보내줍니다.

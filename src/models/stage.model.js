@@ -12,8 +12,12 @@ const getStage = (uuid) => {
 };
 
 // 유저에게 제공할 스테이지
-const setStage = (uuid, stage_id, timestamp) => {
-  return stages[uuid].push({ stage_id, timestamp });
+const setStage = (uuid, id, timestamp) => {
+  return stages[uuid].push({ id, timestamp });
 };
 
-export { createStage, getStage, setStage };
+const clearStage = (uuid) => {
+  stages[uuid] = [];
+};
+
+export { createStage, getStage, setStage, clearStage };

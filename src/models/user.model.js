@@ -3,7 +3,7 @@ const users = [];
 
 // 유저가 접속하면 호출되는 함수
 const addUser = (user) => {
-  user.push(user);
+  users.push(user);
 };
 
 // 유저가 접속 해제 할 때 호출되는 함수

@@ -1,6 +1,5 @@
-import { getStage } from '../models/stage.model.js';
+import { getStage, setStage } from '../models/stage.model.js';
 import { getGameAssets } from '../init/assets.js';
-import { status } from 'init';
 
 const moveStageHandler = (uuid, payload) => {
   // 유저는 스테이지를 하나 씩 올라갈 수 있다.
@@ -23,7 +22,7 @@ const moveStageHandler = (uuid, payload) => {
   const currentStage = currentStages[currentStages.length - 1];
 
   // 클라이언트 VS 서버 비교
-  if (currentStage !== payload.currentStage)
+  if (currentStage.id !== payload.currentStage)
     return { status: 'fail', message: 'Current Stage Mismatch' };
 
   const serverTime = Date.now(); // 현재 타임스탬프
@@ -48,7 +47,7 @@ const moveStageHandler = (uuid, payload) => {
   // 점수를 비교해서 유저가 스테이지를 이동할 점수를 얻었는지 확인하는 코드 넣기
   //
 
-  setStage(userId, payload.targetStage, serverTime);
+  setStage(uuid, payload.targetStage, serverTime);
   // 다음 스테이지를 제공하는 함수
 
   return { status: 'success' };

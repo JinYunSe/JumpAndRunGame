@@ -6,7 +6,7 @@ const registerHandler = (io) => {
   io.on('connection', (socket) => {
     // 최초 커넥션을 맺은 이후 발생하는 각종 이벤트를 처리하는 곳
 
-    const userUUID = uuid;
+    const userUUID = uuid();
     // v4 메서드를 바탕으로 uuid를 생성 및 담아준다.
     addUser({ uuid: userUUID, socketId: socket.id });
     // socketId는 socket.id로 받아온다.

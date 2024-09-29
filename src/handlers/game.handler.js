@@ -1,13 +1,15 @@
-import { status } from 'init';
-import { getStage } from '../models/stage.model.js';
+import { getGameAssets } from '../init/assets.js';
+import { setStage, getStage, clearStage } from '../models/stage.model.js';
 
 const gameStartHandler = (uuid, payload) => {
-  const { stages } = getGameAssets();
+  const { stages, items, itemsUnlocks } = getGameAssets();
   // stages 배열에서 0번 째 = 첫 번째 스테이지
-  setStage(uuid, stages.data[0].stage_id, payload.timestemp);
+
+  clearStage(uuid);
+  setStage(uuid, stages.data[0].id, payload.timestamp);
   // 클라이언트에서 시작하는 시간을 받아서 저장해줄겁니다.
   // => payload.timestemp
-  console.log('Stage : ' + getStage(uuid));
+  console.log('Stage:', getStage(uuid));
   return { status: 'success' };
 };
 // 현재 어떠한 로직도 없기 때문에 무조건 성공으로 처리한다.
@@ -17,7 +19,7 @@ const gameStartHandler = (uuid, payload) => {
 const gameEndHandler = (uuid, payload) => {
   // 클라이언트는 서버로 게임 종료 시점과 타임스탬프와 총 점수를 줄 것 입니다.
 
-  const { timestemp: gameEndTime, score } = payload;
+  const { timestamp: gameEndTime, score } = payload;
   // gameEndTime을 호출하면 key에 따른 value가 나오는데
   // 이 value를 timestemp라는 새로운 key에 제공해줍니다.
 

@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: false }));
 // urlencoded 해주는 옵션
 // extended : true는 라이브러리를 쓸 때
 // extended : false는 라이브러리를 안 쓸 때
+app.use(express.static('public'));
 
 initSocket(server);
 
