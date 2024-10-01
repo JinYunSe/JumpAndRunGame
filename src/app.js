@@ -25,7 +25,7 @@ server.listen(PORT, async () => {
     console.log(assets);
     console.log('Assets loaded Successfull');
   } catch (error) {
-    console.error('Failed to load game assets : ', e);
+    console.error('Failed to load game assets : ', error);
   }
   // assets의 병렬 처리에서 파일 읽기를 실패할 경우
   // try-catch 문으로 상위 함수(현재 여기)에 던져줬기 때문에

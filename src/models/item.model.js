@@ -10,6 +10,7 @@ const getItem = (uuid) => {
   return items[uuid];
 };
 
+// 현재 스테이지에 생성될 Item
 const setItem = (uuid, id) => {
   return items[uuid].push({ id });
 };

@@ -16,8 +16,8 @@ const __filename = fileURLToPath(import.meta.url);
 // fileURLToPath 함수로 C:/Users/~~~/~~~/assets.js로 만들어줍니다.
 
 const __dirname = path.dirname(__filename);
-// /assets.js를 버린 디렉토리를 찾는다.
-const basePath = path.join(__dirname, '../../assets');
+// 이 파일이 있는 상위 폴더로 경로 이동
+const basePath = path.join(__dirname, '../../public/assets');
 // 상위 폴더를 2번 이동한 위치에 있는 assets 폴더에 들어갑니다.
 
 // 파일 읽는 함수

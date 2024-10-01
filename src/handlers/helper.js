@@ -2,21 +2,25 @@ import { getUser, removeUser } from '../models/user.model.js';
 import handlerMappings from './handlerMapping.js';
 import { CLIENT_VERSION } from '../constants.js';
 import { createStage } from '../models/stage.model.js';
+import { createItem } from '../models/item.model.js';
+import { createUnlockItem } from '../models/item_unlock.model.js';
 
-const handleDisconnect = (socket, uuid) => {
+const handleConnection = (socket, userUUID) => {
+  console.log(`New user connected ${userUUID} with socket Id ${socket.id}`);
+  console.log('Current users : ', getUser());
+
+  createStage(userUUID);
+  createUnlockItem(userUUID);
+  createItem(userUUID);
+
+  socket.emit('connection', { userUUID });
+  //소켓을 가지고 있는 유저 본인에게 정보를 보내줍니다.
+};
+
+const handleDisconnect = (socket, userUUID) => {
   removeUser(socket.id);
   console.log(`User disconnected : ${socket.id}`);
   console.log(`Current users : `, getUser());
-};
-
-const handleConnection = (socket, uuid) => {
-  console.log(`New user connected ${uuid} with socket Id ${socket.id}`);
-  console.log('Current users : ', getUser());
-
-  createStage(uuid);
-
-  socket.emit('connection', { uuid });
-  //소켓을 가지고 있는 유저 본인에게 정보를 보내줍니다.
 };
 
 const handlerEvent = (io, socket, data) => {
@@ -40,7 +44,7 @@ const handlerEvent = (io, socket, data) => {
   // handler를 찾았다면 handler를 실행시킵니다.
   const response = handler(data.userId, data.payload);
   // 이때, 매개변수로 받은 userId와 payload는 필수적으로 필요합니다.
-
+  console.log('확인 : ', response);
   if (response.broadcast) {
     io.emit('response', 'broadcast');
     return;

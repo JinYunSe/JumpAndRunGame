@@ -1,4 +1,7 @@
-import { getItem, setItem } from '../models/item.model.js';
 import { getGameAssets } from '../init/assets.js';
 
-//const
+const itemHandler = (userId, payload) => {
+  const { items } = getGameAssets();
+};
+
+export { itemHandler };

@@ -1,10 +1,13 @@
 import { moveStageHandler } from './stage.handler.js';
 import { gameStartHandler, gameEndHandler } from './game.handler.js';
-
+import { itemUnlockHandler } from './item_unlock.handler.js';
+import { itemHandler } from './item.handler.js';
 const handlerMappings = {
   2: gameStartHandler,
   3: gameEndHandler,
   11: moveStageHandler,
+  101: itemUnlockHandler,
+  201: itemHandler,
 };
 // 이벤트에 따른 호출돼야 하는 핸들러 호출을 위한
 // 핸들러 모음

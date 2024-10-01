@@ -1,7 +1,6 @@
-// 아이템.js
+// 아이템과 충돌.js
 
 import Item from './Item.js';
-
 class ItemController {
   INTERVAL_MIN = 0;
   INTERVAL_MAX = 12000;
