@@ -3,39 +3,39 @@
   "version": "1.0.0",
   "data": [
     {
-      "id": 100,
-      "stage_id": 1000,
-      "item_id": [0]
-    },
-    {
       "id": 101,
+      "stage_id": 1000,
+      "item_id": 1
+    },
+    {
+      "id": 201,
       "stage_id": 1001,
-      "item_id": [0, 1]
+      "item_id": 2
     },
     {
-      "id": 102,
+      "id": 301,
       "stage_id": 1002,
-      "item_id": [0, 1, 2]
+      "item_id": 3
     },
     {
-      "id": 103,
+      "id": 401,
       "stage_id": 1003,
-      "item_id": [0, 1, 2, 3]
+      "item_id": 4
     },
     {
-      "id": 104,
+      "id": 501,
       "stage_id": 1004,
-      "item_id": [0, 1, 2, 3, 4]
+      "item_id": 5
     },
     {
-      "id": 105,
+      "id": 601,
       "stage_id": 1005,
-      "item_id": [0, 1, 2, 3, 4, 5]
+      "item_id": 6
     },
     {
-      "id": 106,
+      "id": 701,
       "stage_id": 1006,
-      "item_id": [0, 1, 2, 3, 4, 5, 6]
+      "item_id": 7
     }
   ]
 }

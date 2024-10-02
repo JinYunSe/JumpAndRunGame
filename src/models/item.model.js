@@ -1,22 +1,22 @@
+// key : uuid, value : array -> stage 정보는 배열
 const items = {};
-
-// 유저한테 뜰 아이템 초기화
-const createItem = (uuid) => {
+// 스테이지 초기화
+const createUserItem = (uuid) => {
   items[uuid] = [];
 };
 
-// 현재 스테이지에 뜰 Item 제공
-const getItem = (uuid) => {
+// 유저에게 현재 스테이지
+const getUserItem = (uuid) => {
   return items[uuid];
 };
 
-// 현재 스테이지에 생성될 Item
-const setItem = (uuid, id) => {
-  return items[uuid].push({ id });
+// 유저에게 제공할 스테이지
+const setUserItem = (uuid, score) => {
+  return items[uuid].push(score);
 };
 
-const clearItem = (uuid) => {
+const clearUserItem = (uuid) => {
   items[uuid] = [];
 };
 
-export { createItem, getItem, setItem, clearItem };
+export { createUserItem, getUserItem, setUserItem, clearUserItem };

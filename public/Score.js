@@ -1,13 +1,16 @@
 import { sendEvent } from './Socket.js';
+
 import stageJson from './assets/stage.json' with { type: 'json' };
 import itemJson from './assets/item.json' with { type: 'json' };
+
+import { unLockItem } from './index.js';
 class Score {
   score = 0;
   HIGH_SCORE_KEY = 'highScore';
   stageChange = true;
   scorePerSecond = 1;
-  lastStageScore = stageJson.data[stageJson.data.length - 1].score;
   // 마지막 스테이지 점수 조건
+  stages = stageJson.data;
 
   constructor(ctx, scaleRatio) {
     this.ctx = ctx;
@@ -17,28 +20,47 @@ class Score {
 
   update(deltaTime) {
     this.score += deltaTime * 0.001 * this.scorePerSecond;
-    console.log('시간 당 점수 : ', this.scorePerSecond);
+    // 1초당 scorePerSecond 만큼 점수 얻음
 
-    const currentScore = Math.min(Math.floor(this.score), this.lastStageScore);
+    const currentScore = Math.min(
+      Math.floor(this.score),
+      this.stages[this.stages.length - 1].score,
+    );
+    // 마지막 스테이지 넘어가는 점수이면 마지막 스테이지로 고정
 
-    if (currentScore % 100 === 0 && this.stageChange && currentScore !== 0) {
+
+
+    //
+    // Todo
+    // 클라이언트 스테이지 이동 점수 되면 스테이지 이동 하는 코드 변경하기
+
+
+    if (&& this.stageChange) {
+      // 0 아닌 100 배수 단위 점수이면,
+
       this.stageChange = false;
+      // 중복 실행 방지
 
-      const currentStage = stageJson.data.find((stage) => stage.score === currentScore - 100);
-      const targetStage = stageJson.data.find((stage) => stage.score === currentScore);
-
+      const currentStage = this.stages.find((stage) => stage.score === currentScore - 100);
+      // 현재 점수 - 100 => 현재 스테이지 시작 점수
+      const targetStage = this.stages.find((stage) => stage.score === currentScore);
+      // 현재 점수를 기반으로 다음 스테이지
       this.scorePerSecond = targetStage.scorePerSecond;
-
+      // 다음 스테이지 점수 배율
+      unLockItem(targetStage.id);
       sendEvent(11, { currentStage, targetStage });
+      sendEvent(101, { currentStageId: currentStage.id, targetStageId: targetStage.id });
     }
 
+    // 100의 배수가 아니면 스테이지 이동 허용 가능 상태로 만든다.
     if (currentScore % 100 !== 0 && !this.stageChange) this.stageChange = true;
   }
 
+  // 아이템 먹을 경우 점수
   getItem(itemId) {
-    //console.log('아이템 : ', itemId);
-    //this.score += itemJson.data[itemId].score;
-    //sendEvent(21, { changeScore: this.score });
+    console.log('아이템 : ', itemId);
+    this.score += itemJson.data[itemId].score;
+    sendEvent(201, { itemId });
   }
 
   reset() {

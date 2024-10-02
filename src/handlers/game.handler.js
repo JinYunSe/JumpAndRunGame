@@ -1,25 +1,31 @@
 import { getGameAssets } from '../init/assets.js';
 import { setStage, getStage, clearStage } from '../models/stage.model.js';
-import { setItem, getItem, clearItem } from '../models/item.model.js';
 import { setUnlockItem, getUnlockItem, clearUnlockItem } from '../models/item_unlock.model.js';
-
+import { clearUserItem } from '../models/item.model.js';
+// 게임 다시 시작 단계
 const gameStartHandler = (uuid, payload) => {
-  const { stages, items, itemsUnlocks } = getGameAssets();
-  // stages 배열에서 0번 째 = 첫 번째 스테이지
+  const { stages } = getGameAssets();
+  // 게임 시작, 재시작이라
+
+  // 서버가 알고 있는 유저 스테이지 초기화
   clearStage(uuid);
-  //clearItem(uuid);
-  //clearUnlockItem(uuid);
+  // 서버가 알고 있는 유저 아이템 언락 초기화
+  clearUnlockItem(uuid);
+  // 서버가 알고 있는 유저가 먹은 아이템 초기화
+  clearUserItem(uuid);
 
-  setStage(uuid, stages.data[0], payload.timestamp);
-  //setUnlockItem(uuid, itemsUnlocks.data[0]);
-  //setItem(uuid, items.data[0].id);
+  const data = stages.data[0];
 
-  // 클라이언트에서 시작하는 시간을 받아서 저장해줄겁니다.
-  // => payload.timestemp
+  // 유저의 1스테이지 정보를 서버가 알 수 있도록 등록
+  setStage(uuid, data, payload.timestamp);
+  // 유저의 1스테이지를 언락 정보 서버가 알 수 있도록 등록
+  setUnlockItem(uuid, data.id);
+
+  // 서버에서 유저의 1 스테이지 정보 확인해보기
   console.log('Stage : ', getStage(uuid));
 
-  //console.log('ItemUnlockItem : ', getUnlockItem(uuid));
-  //console.log('Item : ', getItem(uuid));
+  // 서버에서 유저의 1 스테이지 언락 아이템 확인해보기
+  console.log('ItemUnlockItem : ', getUnlockItem(uuid));
 
   return { status: 'success' };
 };

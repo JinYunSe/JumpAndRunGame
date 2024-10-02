@@ -2,7 +2,6 @@ import { getUser, removeUser } from '../models/user.model.js';
 import handlerMappings from './handlerMapping.js';
 import { CLIENT_VERSION } from '../constants.js';
 import { createStage } from '../models/stage.model.js';
-import { createItem } from '../models/item.model.js';
 import { createUnlockItem } from '../models/item_unlock.model.js';
 
 const handleConnection = (socket, userUUID) => {
@@ -11,7 +10,6 @@ const handleConnection = (socket, userUUID) => {
 
   createStage(userUUID);
   createUnlockItem(userUUID);
-  createItem(userUUID);
 
   socket.emit('connection', { userUUID });
   //소켓을 가지고 있는 유저 본인에게 정보를 보내줍니다.

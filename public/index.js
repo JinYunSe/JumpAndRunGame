@@ -37,10 +37,13 @@ const CACTI_CONFIG = [
 
 // 아이템
 const ITEM_CONFIG = [
-  { width: 50 / 1.5, height: 50 / 1.5, id: 1, image: 'images/items/pokeball_red.png' },
-  { width: 50 / 1.5, height: 50 / 1.5, id: 2, image: 'images/items/pokeball_yellow.png' },
-  { width: 50 / 1.5, height: 50 / 1.5, id: 3, image: 'images/items/pokeball_purple.png' },
-  { width: 50 / 1.5, height: 50 / 1.5, id: 4, image: 'images/items/pokeball_cyan.png' },
+  { width: 50 / 1.5, height: 50 / 1.5, id: 1, image: 'images/items/PoketBall.jpg' },
+  { width: 50 / 1.5, height: 50 / 1.5, id: 2, image: 'images/items/PremierBall.jpg' },
+  { width: 50 / 1.5, height: 50 / 1.5, id: 3, image: 'images/items/SuperBall.jpg' },
+  { width: 50 / 1.5, height: 50 / 1.5, id: 4, image: 'images/items/DarkBall.jpg' },
+  { width: 50 / 1.5, height: 50 / 1.5, id: 5, image: 'images/items/HyperBall.jpg' },
+  { width: 50 / 1.5, height: 50 / 1.5, id: 6, image: 'images/items/QuickBall.jpg' },
+  { width: 50 / 1.5, height: 50 / 1.5, id: 7, image: 'images/items/MasterBall.jpg' },
 ];
 
 // 게임 요소들
@@ -176,6 +179,10 @@ function setupGameReset() {
       window.addEventListener('keyup', reset, { once: true });
     }, 1000);
   }
+}
+
+export function unLockItem(stage_id) {
+  itemController.stage_id = stage_id;
 }
 
 function clearScreen() {

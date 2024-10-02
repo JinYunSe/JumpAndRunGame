@@ -11,8 +11,8 @@ const getUnlockItem = (uuid) => {
 };
 
 // 현재 스테이지에 생성될 Item
-const setUnlockItem = (uuid, id, stage_id) => {
-  item_unlock[uuid].push({ id });
+const setUnlockItem = (uuid, id) => {
+  item_unlock[uuid].push(id);
 };
 
 const clearUnlockItem = (uuid) => {
