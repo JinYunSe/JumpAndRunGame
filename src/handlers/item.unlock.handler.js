@@ -1,5 +1,4 @@
-import { setUnlockItem, getUnlockItem } from '../models/item_unlock.model.js';
-import { getGameAssets } from '../init/assets.js';
+import { setUnlockItem, getUnlockItem } from '../models/item.unlock.model.js';
 
 const itemUnlockHandler = (userId, payload) => {
   const { currentStageId, targetStageId } = payload;

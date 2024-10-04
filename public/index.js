@@ -181,8 +181,8 @@ function setupGameReset() {
   }
 }
 
-export function unLockItem(stage_id) {
-  itemController.stage_id = stage_id;
+export function unLockItem(stageId) {
+  itemController.stageId = stageId;
 }
 
 function clearScreen() {

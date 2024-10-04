@@ -1,6 +1,6 @@
 import { moveStageHandler } from './stage.handler.js';
 import { gameStartHandler, gameEndHandler } from './game.handler.js';
-import { itemUnlockHandler } from './item_unlock.handler.js';
+import { itemUnlockHandler } from './item.unlock.handler.js';
 import { itemHandler } from './item.handler.js';
 const handlerMappings = {
   2: gameStartHandler,

@@ -2,7 +2,7 @@ import { getUser, removeUser } from '../models/user.model.js';
 import handlerMappings from './handlerMapping.js';
 import { CLIENT_VERSION } from '../constants.js';
 import { createStage } from '../models/stage.model.js';
-import { createUnlockItem } from '../models/item_unlock.model.js';
+import { createUnlockItem } from '../models/item.unlock.model.js';
 
 const handleConnection = (socket, userUUID) => {
   console.log(`New user connected ${userUUID} with socket Id ${socket.id}`);

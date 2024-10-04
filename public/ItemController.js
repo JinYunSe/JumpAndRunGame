@@ -1,5 +1,5 @@
 // 아이템과 충돌.js
-import itemUnlockJson from './assets/item_unlock.json' with { type: 'json' };
+import itemUnlockJson from './assets/item.unlock.json' with { type: 'json' };
 import itemJson from './assets/item.json' with { type: 'json' };
 
 import Item from './Item.js';
@@ -9,7 +9,7 @@ class ItemController {
 
   nextInterval = null;
   items = [];
-  stage_id = 1000;
+  stageId = 1000;
 
   constructor(ctx, itemImages, scaleRatio, speed) {
     this.ctx = ctx;
@@ -17,7 +17,6 @@ class ItemController {
     this.itemImages = itemImages;
     this.scaleRatio = scaleRatio;
     this.speed = speed;
-    this.createItem();
     this.setNextItemTime();
   }
 
@@ -30,17 +29,17 @@ class ItemController {
   }
 
   createItem() {
-    //console.log('stage_id : ', this.stage_id);
-    // stage_id 가져오기
+    //console.log('stageId : ', this.stageId);
+    // stageId 가져오기
 
     const itemUnlockData = itemUnlockJson.data.find(
-      (itemUnlock) => itemUnlock.stage_id === this.stage_id,
+      (itemUnlock) => itemUnlock.stageId === this.stageId,
     );
-    // stage_id에 따른 itemUnlock 정보 가져오기
+    // stageId에 따른 itemUnlock 정보 가져오기
     //console.log('itemUnlockData : ', itemUnlockData);
 
-    const itemData = itemJson.data.find((item) => item.id === itemUnlockData.item_id);
-    // itemUnlockData의 item_id와 같은 id를 가진 ItemData 가져오기
+    const itemData = itemJson.data.find((item) => item.id === itemUnlockData.itemId);
+    // itemUnlockData의 itemId와 같은 id를 가진 ItemData 가져오기
 
     const index = this.getRandomNumber(0, itemData.id - 1);
     // 아이템 생성 주기
@@ -66,7 +65,7 @@ class ItemController {
   }
 
   update(gameSpeed, deltaTime) {
-    console.log('stage_id : ', this.stage_id);
+    console.log('stageId : ', this.stageId);
 
     if (this.nextInterval <= 0) {
       this.createItem();

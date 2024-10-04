@@ -61,7 +61,7 @@ const loadGameAssets = async () => {
     const [stages, items, itemsUnlocks] = await Promise.all([
       readFileAsync('stage.json'),
       readFileAsync('item.json'),
-      readFileAsync('item_unlock.json'),
+      readFileAsync('item.unlock.json'),
     ]);
     // readFileAsync로 assets 폴더 안 .json파일
     // 을 읽어오고, 배열에 값을 저장해줍니다.

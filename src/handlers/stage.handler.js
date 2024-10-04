@@ -1,7 +1,6 @@
 import { getStage, setStage } from '../models/stage.model.js';
 import { getGameAssets } from '../init/assets.js';
 import { getUserItem } from '../models/item.model.js';
-import ServerTime from '../models/servertime.model.js';
 
 const moveStageHandler = (userId, payload) => {
   const { stages } = getGameAssets();
@@ -24,17 +23,21 @@ const moveStageHandler = (userId, payload) => {
     return { status: 'fail', message: 'Current Stage Mismatch' };
 
   const serverTime = Date.now(); // 현재 타임스탬프
-  const elapsedTime = ((serverTime - playerStage.timestamp) / 1000) * playerStage.scorePerSecond;
+  let elapsedTime = ((serverTime - playerStage.timestamp) / 1000) * playerStage.scorePerSecond;
   // ((현재 시간 - 스테이지 시작 시간) / 1000) * 시간 당 점수
-  // 로 서버가 아는 유저 점수 구현
+  // 로 유저가 시간 당 얻은 점수 구하기
 
-  const userEatedItem = getUserItem(userId).reduce((acc, cur) => {
+  const playerEatedItem = getUserItem(userId, currentStage.id);
+
+  console.log('플레이어 아이템 : ', playerEatedItem);
+
+  elapsedTime += playerEatedItem.reduce((acc, cur) => {
     return (acc += cur);
   }, 0);
+  // 유저가 먹은 점수 더해주기
 
-  console.log('유저가 먹은 아이템 점수 합 : ', userEatedItem);
-
-  if (elapsedTime > 105 + userEatedItem) {
+  // 마지막에 먹은 점수로 유효 범위 정하기
+  if (elapsedTime > 105 + playerEatedItem[playerEatedItem.length - 1]) {
     return { status: 'fail', message: 'Invalid elapsed time' };
   }
   // 오차 범위
@@ -45,7 +48,6 @@ const moveStageHandler = (userId, payload) => {
 
   setStage(userId, targetStage, serverTime);
 
-  console.log('Stage : ', getStage(userId));
   return { status: 'success' };
 };
 

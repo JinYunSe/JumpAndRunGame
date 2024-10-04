@@ -2,17 +2,18 @@
 const items = {};
 // 스테이지 초기화
 const createUserItem = (uuid) => {
-  items[uuid] = [];
+  items[uuid] = {};
 };
 
 // 유저에게 현재 스테이지
-const getUserItem = (uuid) => {
-  return items[uuid];
+const getUserItem = (uuid, stageId) => {
+  return items[uuid][stageId - 1000];
 };
 
 // 유저에게 제공할 스테이지
-const setUserItem = (uuid, score) => {
-  return items[uuid].push(score);
+const setUserItem = (uuid, { stageId, itemScore }) => {
+  if (!items[uuid][stageId - 1000]) items[uuid][stageId - 1000] = [];
+  items[uuid][stageId - 1000].push(itemScore);
 };
 
 const clearUserItem = (uuid) => {
