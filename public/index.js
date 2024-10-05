@@ -168,7 +168,7 @@ function reset() {
   cactiController.reset();
   score.reset();
   gameSpeed = GAME_SPEED_START;
-  sendEvent(2, { timestamp: Date.now() });
+  sendEvent(2, { timestamp: Date.now(), socre: score.score });
 }
 
 function setupGameReset() {
@@ -236,7 +236,9 @@ function gameLoop(currentTime) {
   itemController.draw();
 
   if (gameover) {
+    sendEvent(3, { timestamp: Date.now(), score: score.getScore() });
     showGameOver();
+    return;
   }
 
   if (waitingToStart) {

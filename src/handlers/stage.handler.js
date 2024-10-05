@@ -27,17 +27,17 @@ const moveStageHandler = (userId, payload) => {
   // ((현재 시간 - 스테이지 시작 시간) / 1000) * 시간 당 점수
   // 로 유저가 시간 당 얻은 점수 구하기
 
-  const playerEatedItem = getUserItem(userId, currentStage.id);
+  const playerEatedItem = getUserItem(userId, currentStage.id) || [];
 
   console.log('플레이어 아이템 : ', playerEatedItem);
 
-  elapsedTime += playerEatedItem.reduce((acc, cur) => {
-    return (acc += cur);
-  }, 0);
+  elapsedTime += playerEatedItem.reduce((acc, cur) => acc + cur, 0);
   // 유저가 먹은 점수 더해주기
 
+  const lastItem = playerEatedItem[playerEatedItem.length - 1] || 0;
+
   // 마지막에 먹은 점수로 유효 범위 정하기
-  if (elapsedTime > 105 + playerEatedItem[playerEatedItem.length - 1]) {
+  if (elapsedTime > 105 + lastItem) {
     return { status: 'fail', message: 'Invalid elapsed time' };
   }
   // 오차 범위

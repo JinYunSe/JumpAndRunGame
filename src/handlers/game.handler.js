@@ -2,6 +2,8 @@ import { getGameAssets } from '../init/assets.js';
 import { setStage, getStage, clearStage } from '../models/stage.model.js';
 import { setUnlockItem, getUnlockItem, clearUnlockItem } from '../models/item.unlock.model.js';
 import { clearUserItem, getUserItem } from '../models/item.model.js';
+import redisClient from '../init/redis.js';
+
 // 게임 다시 시작 단계
 const gameStartHandler = (uuid, payload) => {
   const { stages } = getGameAssets();
@@ -35,27 +37,41 @@ const gameStartHandler = (uuid, payload) => {
 // stage.json 파일에 "scorePerSecond" : 1 ~ 10 방식으로 스테이지 당 점수 주기
 const gameEndHandler = (uuid, payload) => {
   // 클라이언트에서 받은 게임 종료 시 타임스탬프와 총 점수
-  const { timestamp: gameEndTime, score } = payload;
+  const { timestamp, score } = payload;
+
+  console.log('timestamp : ', timestamp);
+
   const stages = getStage(uuid);
 
   if (!stages.length) {
     return { status: 'fail', message: 'No stages found for user' };
   }
 
-  // 각 스테이지의 지속 시간을 계산하여 총 점수 계산
+  //총 점수 계산
   let totalScore = 0;
+
+  // 각 스테이지별 시간 당 점수 및 유저가 먹은 아티템 점수 합
   stages.forEach((stage, index) => {
     let stageEndTime;
+
     if (index === stages.length - 1) {
       // 마지막 스테이지의 경우 종료 시간이 게임의 종료 시간
-      stageEndTime = gameEndTime;
+      stageEndTime = timestamp;
     } else {
       // 다음 스테이지의 시작 시간을 현재 스테이지의 종료 시간으로 사용
       stageEndTime = stages[index + 1].timestamp;
     }
+
     const stageDuration = (stageEndTime - stage.timestamp) / 1000; // 스테이지 지속 시간 (초 단위)
-    totalScore += stageDuration; // 1초당 1점
+    totalScore += stageDuration * stage.scorePerSecond; // 시간 당 점수로 변경
+
+    const playerEatItem = getUserItem(uuid, stage.id) || [];
+    // 유저가 스테이지에 먹은 아이템
+
+    totalScore += playerEatItem.reduce((acc, cur) => acc + cur, 0);
   });
+
+  console.log('클라이언트가 제공한 코드 : ', score, ' : 서버가 측정한 시간', totalScore);
 
   // 점수와 타임스탬프 검증 (예: 클라이언트가 보낸 총점과 계산된 총점 비교)
   // 오차범위 5
@@ -66,6 +82,7 @@ const gameEndHandler = (uuid, payload) => {
   // 모든 검증이 통과된 후, 클라이언트에서 제공한 점수 저장하는 로직
   // saveGameResult(userId, clientScore, gameEndTime);
   // 검증이 통과되면 게임 종료 처리
+
   return { status: 'success', message: 'Game ended successfully', score };
 };
 // 현재 어떠한 로직도 없기 때문에 무조건 성공으로 처리한다.

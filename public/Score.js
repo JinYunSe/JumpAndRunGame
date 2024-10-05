@@ -1,7 +1,6 @@
 import { sendEvent } from './Socket.js';
 import stageJson from './assets/stage.json' with { type: 'json' };
 import itemJson from './assets/item.json' with { type: 'json' };
-
 import { unLockItem } from './index.js';
 
 class Score {
@@ -26,7 +25,6 @@ class Score {
     const currendScore = Math.floor(this.score);
 
     //console.log('다음 스테이지 : ', this.targetStage.score, ', 현재 스테이지 : ', this.score);
-
     if (this.targetStage) {
       if (this.targetStage.score <= currendScore && this.stageChange) {
         // 0 아닌 100 배수 단위 점수이면,
@@ -56,6 +54,7 @@ class Score {
   }
 
   reset() {
+    //sendEvent(3, { tiemstamp: Date.now(), score: SendScore() });
     this.score = 0;
     this.scorePerSecond = 1;
   }
@@ -78,6 +77,9 @@ class Score {
     const fontSize = 20 * this.scaleRatio;
     this.ctx.font = `${fontSize}px serif`;
     this.ctx.fillStyle = '#525250';
+
+    const stageInfoText = `Stage : ${this.currentStage.scorePerSecond}`;
+    this.ctx.fillText(stageInfoText, 750, y);
 
     const scoreX = this.canvas.width - 75 * this.scaleRatio;
     const highScoreX = scoreX - 125 * this.scaleRatio;
