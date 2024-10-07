@@ -2,7 +2,6 @@ import { getGameAssets } from '../init/assets.js';
 import { setStage, getStage, clearStage } from '../models/stage.model.js';
 import { setUnlockItem, getUnlockItem, clearUnlockItem } from '../models/item.unlock.model.js';
 import { clearUserItem, getUserItem } from '../models/item.model.js';
-import redisClient from '../init/redis.js';
 
 // 게임 다시 시작 단계
 const gameStartHandler = (uuid, payload) => {
