@@ -88,17 +88,19 @@ class Score {
     this.ctx.font = `${fontSize}px serif`;
     this.ctx.fillStyle = '#525250';
 
-    const stageInfoText = `Stage : ${this.currentStage.scorePerSecond}`;
-    this.ctx.fillText(stageInfoText, 750, y);
-
     const scoreX = this.canvas.width - 75 * this.scaleRatio;
     const highScoreX = scoreX - 125 * this.scaleRatio;
+    const stageX = highScoreX - 125 * this.scaleRatio;
 
     const scorePadded = Math.floor(this.score).toString().padStart(6, 0);
     const highScorePadded = highScore.toString().padStart(6, 0);
 
+    // stage 정보 만들기
+    const stageNumber = this.stages.indexOf(this.currentStage) + 1;
+
     this.ctx.fillText(scorePadded, scoreX, y);
     this.ctx.fillText(`HI ${highScorePadded}`, highScoreX, y);
+    this.ctx.fillText(`Stage : ${stageNumber}`, stageX, y);
   }
 }
 
