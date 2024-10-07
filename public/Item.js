@@ -34,7 +34,7 @@ class Item {
     }
 
     // 충돌
-    //return result;
+    return result;
   };
 }
 
