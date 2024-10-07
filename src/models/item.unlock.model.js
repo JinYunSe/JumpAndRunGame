@@ -1,3 +1,4 @@
+// key : uuid, value : array -> stage 정보는 배열
 const itemUnlock = {};
 
 // 유저한테 뜰 아이템 초기화
@@ -15,6 +16,7 @@ const setUnlockItem = (uuid, id) => {
   itemUnlock[uuid].push(id);
 };
 
+// 유저의 현재 스테이지 초기화
 const clearUnlockItem = (uuid) => {
   itemUnlock[uuid] = [];
 };

@@ -27,36 +27,46 @@ class Score {
     //console.log('다음 스테이지 : ', this.targetStage.score, ', 현재 스테이지 : ', this.score);
     if (this.targetStage) {
       if (this.targetStage.score <= currendScore && this.stageChange) {
-        // 0 아닌 100 배수 단위 점수이면,
-        console.log('동작 유무 확인');
+        // 스테이지 클리어 점수보다 현재 점수가 더 높을 경우
+
         this.stageChange = false;
         // 중복 실행 방지
 
-        // 다음 스테이지 점수 배율
+        // 다음 스테이지 아이템 해금
         unLockItem(this.targetStage.id);
+
         sendEvent(11, { currentStage: this.currentStage, targetStage: this.targetStage });
+        // 유저가 진행한 현재 스테이지와 다음 스테이지를 서버에 제공 및 검증 요청
+
         sendEvent(101, {
           currentStageId: this.currentStage.id,
           targetStageId: this.targetStage.id,
         });
+        // 유저가 진행한 현재 스테이지와 다음 스테이지에 따른 아이템 해금 정보 서버에 제공 및 검증 요청
+
         this.currentStage = this.targetStage;
+        // 현재 스테이지를 다음 스테이지로 변경
+
         this.targetStage = this.stages[this.currentStage.scorePerSecond];
+        // 다음 스테이지를 그 다음 스테이지로 변경
       }
     }
 
-    // 100의 배수가 아니면 스테이지 이동 허용 가능 상태로 만든다.
-    if (currendScore % 100 !== 0 && !this.stageChange) this.stageChange = true;
+    // 스테이지 이동이 완료된 상태라 스테이지 변경 허용으로 설정
+    if (!this.stageChange) this.stageChange = true;
   }
   // 아이템 먹을 경우 점수
   getItem(itemId) {
     this.score += itemJson.data[itemId - 1].score;
+    // Item 정보가 담긴 JSON 파일에서 해당 Item id - 1에 해당하는 점수 추가
+
     sendEvent(201, { stageId: this.currentStage.id, itemId });
+    // 유저가 진행 중인 스테이지 id와 먹은 아이템 id 제공
   }
 
   reset() {
-    //sendEvent(3, { tiemstamp: Date.now(), score: SendScore() });
     this.score = 0;
-    this.scorePerSecond = 1;
+    // 게임 종료시 점수 초기화
   }
 
   setHighScore() {

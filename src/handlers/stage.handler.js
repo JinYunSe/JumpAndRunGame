@@ -27,16 +27,19 @@ const moveStageHandler = (userId, payload) => {
   // ((현재 시간 - 스테이지 시작 시간) / 1000) * 시간 당 점수
   // 로 유저가 시간 당 얻은 점수 구하기
 
-  const playerEatedItem = getUserItem(userId, currentStage.id) || [];
+  const playerEatenItem = getUserItem(userId, currentStage.id) || [];
+  // 유저가 해당 스테이지에서 먹은 아이템 점수 가져오기
 
-  console.log('플레이어 아이템 : ', playerEatedItem);
+  console.log('플레이어 아이템 : ', playerEatenItem);
+  // 유저가 해당 스테이지에 먹은 아이템 점수 확인
 
-  elapsedTime += playerEatedItem.reduce((acc, cur) => acc + cur, 0);
+  elapsedTime += playerEatenItem.reduce((acc, cur) => acc + cur, 0);
   // 유저가 먹은 점수 더해주기
 
-  const lastItem = playerEatedItem[playerEatedItem.length - 1] || 0;
+  const lastItem = playerEatenItem[playerEatenItem.length - 1] || 0;
+  // 유저가 마지막에 먹은 아아템
 
-  // 마지막에 먹은 점수로 유효 범위 정하기
+  // 마지막에 먹은 아이템 점수로 유효 범위 정하기
   if (elapsedTime > 105 + lastItem) {
     return { status: 'fail', message: 'Invalid elapsed time' };
   }
@@ -44,9 +47,10 @@ const moveStageHandler = (userId, payload) => {
 
   if (!stages.data.some((stage) => stage.id === targetStage.id))
     return { status: 'fail', message: 'Target Stage Not Found' };
-  // 스테이지 유무 확인
+  // 다음 스테이지 유무 확인
 
   setStage(userId, targetStage, serverTime);
+  // 유저에게 다음 스테이지와 다음 스테이지 시작 시간 기록
 
   return { status: 'success' };
 };

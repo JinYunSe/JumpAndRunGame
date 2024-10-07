@@ -15,6 +15,7 @@ const registerHandler = (io) => {
     handleConnection(socket, userUUID);
 
     socket.on('event', (data) => handlerEvent(io, socket, data));
+    // 유저의 행동에 따른 이밴트 처리
 
     //접속 해제시 이벤트
     socket.on('disconnect', (socket) => handleDisconnect(socket, userUUID));

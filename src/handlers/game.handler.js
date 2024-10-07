@@ -30,10 +30,7 @@ const gameStartHandler = (uuid, payload) => {
 
   return { status: 'success' };
 };
-// 현재 어떠한 로직도 없기 때문에 무조건 성공으로 처리한다.
 
-// 과제 : item.json 파일에
-// stage.json 파일에 "scorePerSecond" : 1 ~ 10 방식으로 스테이지 당 점수 주기
 const gameEndHandler = (uuid, payload) => {
   // 클라이언트에서 받은 게임 종료 시 타임스탬프와 총 점수
   const { timestamp, score } = payload;
@@ -49,7 +46,7 @@ const gameEndHandler = (uuid, payload) => {
   //총 점수 계산
   let totalScore = 0;
 
-  // 각 스테이지별 시간 당 점수 및 유저가 먹은 아티템 점수 합
+  // 각 스테이지별 시간 당 점수 및 유저가 먹은 아이템 점수 합 구하기
   stages.forEach((stage, index) => {
     let stageEndTime;
 
@@ -64,28 +61,22 @@ const gameEndHandler = (uuid, payload) => {
     const stageDuration = (stageEndTime - stage.timestamp) / 1000; // 스테이지 지속 시간 (초 단위)
     totalScore += stageDuration * stage.scorePerSecond; // 시간 당 점수로 변경
 
-    const playerEatItem = getUserItem(uuid, stage.id) || [];
+    const playerEatenItem = getUserItem(uuid, stage.id) || [];
     // 유저가 스테이지에 먹은 아이템
 
-    totalScore += playerEatItem.reduce((acc, cur) => acc + cur, 0);
+    totalScore += playerEatenItem.reduce((acc, cur) => acc + cur, 0);
+    // 시간 당 점수에 아이템 점수 반영해주기
   });
 
-  console.log('클라이언트가 제공한 코드 : ', score, ' : 서버가 측정한 시간', totalScore);
+  console.log('클라이언트가 제공한 점수 : ', score, ' : 서버가 측정한 시간', totalScore);
 
-  // 점수와 타임스탬프 검증 (예: 클라이언트가 보낸 총점과 계산된 총점 비교)
-  // 오차범위 5
+  // 클라이언트가 보낸 점수와 서버가 측정한 점수 오차 계산
   if (Math.abs(score - totalScore) > 5) {
     return { status: 'fail', message: 'Score verification failed' };
   }
 
-  // 모든 검증이 통과된 후, 클라이언트에서 제공한 점수 저장하는 로직
-  // saveGameResult(userId, clientScore, gameEndTime);
-  // 검증이 통과되면 게임 종료 처리
-
+  // 모든 검증이 통과된 후, 클라이언트가 제공한 점수 반영
   return { status: 'success', message: 'Game ended successfully', score };
 };
-// 현재 어떠한 로직도 없기 때문에 무조건 성공으로 처리한다.
 
 export { gameStartHandler, gameEndHandler };
-// gameStart handler와 gameEnd handler를
-// handlerMapping에 추가해줍니다.

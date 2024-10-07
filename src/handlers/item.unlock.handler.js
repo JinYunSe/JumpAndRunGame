@@ -21,7 +21,13 @@ const itemUnlockHandler = (userId, payload) => {
   // (스테이지가 다를 경우 아이템 언락 정보도 다른 상태)
 
   setUnlockItem(userId, targetStageId);
+  // itemUnlockHandler와 setUnlockItem 까지 왔다면
+  // 정상적인 다음 스테이지 이동에 따른 아이템 해금 요청
+  // 따라서, 다음 스테이지 아이템 해금
+
   console.log('ItemUnlock : ', getUnlockItem(userId));
+  // 해당 유저의 현재 해금된 아이템 목록 조회
+
   return { status: 'success' };
 };
 
